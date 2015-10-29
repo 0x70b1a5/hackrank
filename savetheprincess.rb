@@ -41,43 +41,64 @@ Algorithm:
 7. PINCESS!
 =end
 
-def displayPathtoPrincess(n,grid)
-  puts grid
+# Autogenerate grids? # Tentatively DONE
 
-  updown = leftright = false
-  move_tracker = 0 
+updown = leftright = false # move flags
+move_tracker = 0 
 
-  if grid && grid[0] && grid[0][0] 
+puts "How big-a you want-a the grid?\n"
+m = gets.to_i
+
+def look(corner) # looks in a corner for a Pincess.
+  puts "look is getting called"
+  
+  if $grid && $grid[0] && $grid[0][0] 
     hash_corner = { 
-      "0"=>grid[0][0], 
-      "1"=>grid[0][n-1], 
-      "2"=>grid[n-1][0], 
-      "3"=>grid[n-1][n-1] 
-      }  
-  end
-
-  def look(c) # looks in a corner for a Pincess.
-  	if c > "3" || c < "0" then return false end # indicates something went seriously wrong!
-  	if c.ord == 112 # == "p"
-  	  true # found that Pincess!
-  	else 
-  	  # sorry Mario, but your Pincess is in another castle!
-      c.succ += 1
-      if c > "3" then c = "0" end # this cycles us between "0" --> "3"
-      look(c) # Keep looking until we find her.
-    end
+      "0"=>$grid[0][0], 
+      "1"=>$grid[0][n-1], 
+      "2"=>$grid[n-1][0], 
+      "3"=>$grid[n-1][n-1] 
+    }  
   end
   
+  princess_corner = hash_corner[corner]
+
+  if princess_corner.ord == 112 # p
+    puts "Found the Pincess!"
+    case 
+    when c == 0
+      leftright = false
+    when c == 1
+      # we good
+    when c == 2
+      updown = true
+    when c == 3
+      updown = leftright = true
+    else
+      "ya screwed up."
+    end
+  else
+    puts "Sorry Mario, but your Pincess is in another castle! c =" + c
+    c.succ += 1
+    if c > "3" then c = "0" end # this cycles us between "0" --> "3"
+    look(c) # Keep looking until we find her.
+  end
+end
+
+def displayPathtoPrincess(n,grid)
+  puts grid 
+
   # Randomize starting square for better search
   roll = rand(4)
-  if hash_corner then look(hash_corner[roll.to_s]) end
+  puts "roll = " + roll.to_s
+  look(roll)
   
   # we start out moving only up or down,
   # because the if statement returns
   # that direction first, unless
   # we've made it to the edge of the row
   # (symbolized by move_tracker).
-  while move_tracker < n-1
+  while move_tracker < n-1  
     if move_tracker < n/2
       if updown then puts("DOWN") else puts("UP") end
     else
@@ -88,7 +109,7 @@ def displayPathtoPrincess(n,grid)
   # that's all, folks!
 end
 
-def makeygrid(m)
+def makeu_griddu(m)
   grid = Array.new(m)
 
   (0...m).each do |i|
@@ -115,12 +136,8 @@ def makeygrid(m)
   grid
 end
 
-p "How big grid?\n"
-m = gets.to_i
-
-grid = makeygrid(m)
+$grid = makeu_griddu(m)
 
 displayPathtoPrincess(m,grid)
 
 # TODO: look() needs to return WHERE the Pincess is.
-# TODO: Autogenerate grids? # Tentatively DONE???

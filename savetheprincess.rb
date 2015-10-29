@@ -43,15 +43,13 @@ Algorithm:
 
 # Autogenerate grids? # Tentatively DONE
 
-updown = leftright = false # move flags
-move_tracker = 0 
+$updown = $leftright = false # move flags
+$move_tracker = 0 
 
 puts "How big-a you want-a the grid?\n"
 m = gets.to_i
 
-def look(corner) # looks in a corner for a Pincess.
-  puts "look is getting called"
-  
+def look(n,corner) # looks in a corner for a Pincess.
   if $grid && $grid[0] && $grid[0][0] 
     hash_corner = { 
       "0"=>$grid[0][0], 
@@ -59,21 +57,25 @@ def look(corner) # looks in a corner for a Pincess.
       "2"=>$grid[n-1][0], 
       "3"=>$grid[n-1][n-1] 
     }  
+  else return # you have no business looking w/o a grid
   end
   
-  princess_corner = hash_corner[corner]
+  if hash_corner[corner] != nil
+    princess_corner = hash_corner[corner]
+  else return # no hash, no cash
+  end
 
   if princess_corner.ord == 112 # p
     puts "Found the Pincess!"
     case 
     when c == 0
-      leftright = false
+      $leftright = false
     when c == 1
       # we good
     when c == 2
-      updown = true
+      $updown = true
     when c == 3
-      updown = leftright = true
+      $updown = $leftright = true
     else
       "ya screwed up."
     end
@@ -86,25 +88,23 @@ def look(corner) # looks in a corner for a Pincess.
 end
 
 def displayPathtoPrincess(n,grid)
-  puts grid 
-
   # Randomize starting square for better search
-  roll = rand(4)
-  puts "roll = " + roll.to_s
-  look(roll)
+  roll = rand(4).to_s # very important that it be a string... >_>
+  puts "roll = " + roll
+  look(n,roll)
   
   # we start out moving only up or down,
   # because the if statement returns
   # that direction first, unless
   # we've made it to the edge of the row
   # (symbolized by move_tracker).
-  while move_tracker < n-1  
-    if move_tracker < n/2
-      if updown then puts("DOWN") else puts("UP") end
+  while $move_tracker < n-1  
+    if $move_tracker < n/2
+      if $updown then puts("DOWN") else puts("UP") end
     else
-      if leftright then puts("LEFT") else puts("RIGHT") end
+      if $leftright then puts("LEFT") else puts("RIGHT") end
     end
-    move_tracker += 1 
+    $move_tracker += 1 
   end
   # that's all, folks!
 end
@@ -133,11 +133,12 @@ def makeu_griddu(m)
   else
     grid[m-1][m-1] = "p"
   end
+  puts grid
   grid
 end
 
 $grid = makeu_griddu(m)
 
-displayPathtoPrincess(m,grid)
+displayPathtoPrincess(m,$grid)
 
 # TODO: look() needs to return WHERE the Pincess is.

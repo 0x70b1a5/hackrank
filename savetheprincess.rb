@@ -41,6 +41,7 @@ Algorithm:
 7. PINCESS!
 =end
 
+# I'm sorry about all the global variables
 # Autogenerate grids? # Tentatively DONE
 
 $updown = $leftright = false # move flags
@@ -66,31 +67,32 @@ def look(n,corner) # looks in a corner for a Pincess.
   end
 
   if princess_corner.ord == 112 # p
-    puts "Found the Pincess!"
+    # "Found the Pincess!"
     case 
-    when c == 0
-      $leftright = false
-    when c == 1
+    when corner == "0"
+      $leftright = true
+    when corner == "1"
       # we good
-    when c == 2
+    when corner == "2"
+      $updown  = $leftright = true
+    when corner == "3"
       $updown = true
-    when c == 3
-      $updown = $leftright = true
     else
-      "ya screwed up."
+      # "ya screwed up."
     end
   else
-    puts "Sorry Mario, but your Pincess is in another castle! c =" + c
-    c.succ += 1
-    if c > "3" then c = "0" end # this cycles us between "0" --> "3"
-    look(c) # Keep looking until we find her.
+    # "Sorry Mario, but your Pincess is in another castle! This corner = " + corner
+    # "Next corner = " + corner.succ! 
+    corner.succ! 
+    if corner > "3" then corner = "0" end # this cycles us between "0" --> "3"
+    look(n,corner) # Keep looking until we find her.
   end
 end
 
 def displayPathtoPrincess(n,grid)
   # Randomize starting square for better search
-  roll = rand(4).to_s # very important that it be a string... >_>
-  puts "roll = " + roll
+  roll = rand(4).to_s # it's very important that this be a string... >_>
+  # puts "roll = " + roll
   look(n,roll)
   
   # we start out moving only up or down,
@@ -100,9 +102,9 @@ def displayPathtoPrincess(n,grid)
   # (symbolized by move_tracker).
   while $move_tracker < n-1  
     if $move_tracker < n/2
-      if $updown then puts("DOWN") else puts("UP") end
+      $updown ? puts("DOWN") : puts("UP")
     else
-      if $leftright then puts("LEFT") else puts("RIGHT") end
+      $leftright ? puts("LEFT") : puts("RIGHT")
     end
     $move_tracker += 1 
   end

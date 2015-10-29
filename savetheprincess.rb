@@ -68,7 +68,6 @@ def look(n,corner) # looks in a corner for a Pincess.
   end
 
   if princess_corner.ord == 112 # p
-    # "Found the Pincess!"
     case 
     when corner == "0"
       $leftright = true
@@ -81,8 +80,8 @@ def look(n,corner) # looks in a corner for a Pincess.
     else
       # "ya screwed up."
     end
+    $found = true
   end
-  $found = true
 end
 
 def displayPathtoPrincess(n,grid)

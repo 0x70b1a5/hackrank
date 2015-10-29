@@ -46,8 +46,9 @@ Algorithm:
 
 $updown = $leftright = false # move flags
 $move_tracker = 0 
+$found = false
 
-puts "How big-a you want-a the grid?\n"
+#puts "How big-a you want-a the grid?\n"
 m = gets.to_i
 
 def look(n,corner) # looks in a corner for a Pincess.
@@ -80,20 +81,21 @@ def look(n,corner) # looks in a corner for a Pincess.
     else
       # "ya screwed up."
     end
-  else
-    # "Sorry Mario, but your Pincess is in another castle! This corner = " + corner
-    # "Next corner = " + corner.succ! 
-    corner.succ! 
-    if corner > "3" then corner = "0" end # this cycles us between "0" --> "3"
-    look(n,corner) # Keep looking until we find her.
   end
+  $found = true
 end
 
 def displayPathtoPrincess(n,grid)
   # Randomize starting square for better search
   roll = rand(4).to_s # it's very important that this be a string... >_>
   # puts "roll = " + roll
-  look(n,roll)
+  while !$found
+    look(n,roll)
+    # "Sorry Mario, but your Pincess is in another castle! This corner = " + corner
+    # "Next corner = " + corner.succ! 
+    roll.succ! 
+    if roll > "3" then roll = "0" end # this cycles us between "0" --> "3"
+  end # Keep looking until we find her.
   
   # we start out moving only up or down,
   # because the if statement returns
@@ -135,11 +137,16 @@ def makeu_griddu(m)
   else
     grid[m-1][m-1] = "p"
   end
-  puts grid
+  #puts grid
   grid
 end
 
-$grid = makeu_griddu(m)
+# $grid = makeu_griddu(m)
+$grid = Array.new(m)
+
+(0...m).each do |i|
+    $grid[i] = gets.strip
+end
 
 displayPathtoPrincess(m,$grid)
 

@@ -9,8 +9,16 @@ def change a
   #   that letter's position in the Roman alphabet.)
   # Whoops, make that 97 because zero-index.
   # Return zero_str.
+
+  # okay, that didn't work. Too bad.
+
+  # Try this: add "0" * (letters before l) for each letter, and "1" for the letter itself.
   
-  (("0"*26).split("").map.with_index {|c, i| a.downcase.chars.sort.map {|l| i == ((l.ord)-97) ? c = "1" : next } }).join("")
+  #(a.downcase.chars.uniq.sort.map.with_index {|l,i| "0"*(((l.ord)-97)-(i+l.ord-) + "1"}).join()
+
+  # Back to the original plan...
+  #(("0"*26).chars.map.with_index { |d,i| (a.downcase.chars.uniq.sort.map { |c| c.ord-97 == i ? "1" : nil })||"0" }).join
+  # THIS IS THE SOUND OF A MAN GIVING UP
 end
 
-puts change("butts")
+puts "butts\n"*rand(50)

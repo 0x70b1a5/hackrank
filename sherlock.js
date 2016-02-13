@@ -1,3 +1,5 @@
+//sherlock.js 
+//https://www.hackerrank.com/challenges/sherlock-and-the-beast/submissions/code/17307709
 process.stdin.resume();
 process.stdin.setEncoding('ascii');
 
@@ -25,57 +27,22 @@ function main() {
     var t = parseInt(readLine());
     for(var a0 = 0; a0 < t; a0++){
         var n = parseInt(readLine());
-        var dn = decNum(n);
-        switch (dn){
-            case 0:
-                console.log("-1");
-                break;
-            default:
-                console.log(dn);
-                break;
+        var z = n;
+        while(z%3!=0) {
+            z-=5;
+        }
+        if (z<0){
+            console.log('-1');
+        } else {
+            var outFives = "";
+            for (var i=0;i<z;i++){
+                outFives+="5";
+            }
+            var outThrees = "";
+            for (var i=0;i<(n-z);i++){
+                outThrees+="3";
+            }
+            console.log(outFives+outThrees);
         }
     }
-}
-
-function decNum(dig){
-    var decent = "";
-    do {
-        decent+="5";
-        dig--;
-    } while (dig>0);
-    while (!isDN(decent)&&decent>0) {
-        decent--;
-    }
-    return decent;
-}
-
-function print(x){console.log(x)};
-
-function isDN(num) {
-    if (!(num%5==0||num%3==0)) return false;
-    
-    // check for non-3 & non-5 digits
-    //print(num);
-    var digits_a = num.toString().split("");
-   // print(digits_a);
-    var threeOrFive = function (digit) { return (digit == 3 || digit == 5) ? true : false};
-    var digit_bools = digits_a.map(threeOrFive);
-   //print (digit_bools);
-    for (var i=0; i<digit_bools.length;i++) {
-       // print("I'm HERE "+digit_bools[i]);
-        if (!digit_bools[i]) return false;
-    }
-    
-    // check number of 3s % 5 == 0 
-    // && number of 5s % 3 == 0
-    digits_sort = digits_a.sort().join("");
-    var threes = /3+/.exec(digits_sort); // --> ["3+"] OR null
-    var fives = /5+/.exec(digits_sort); // --> ["5+"] OR null
-    if (threes!=null){ 
-        if (threes[0]%5 != 0) return false;
-    }
-    if (fives!=null){
-        if (fives[0]%3 != 0) return false;
-    }
-    return true;
 }

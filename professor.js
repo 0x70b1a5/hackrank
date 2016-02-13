@@ -1,4 +1,5 @@
 // professor.js
+// https://www.hackerrank.com/challenges/angry-professor
 process.stdin.resume();
 process.stdin.setEncoding('ascii');
 
